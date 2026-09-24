@@ -19,13 +19,13 @@ jobs:
       - run: pip install ".[viz]" pyinstaller
       - name: Build
         run: python packaging/build_exe.py
-      - name: The executable builds the ICL_MRI model like MATLAB
+      - name: The executable builds the LHDL_CT model like MATLAB
         run: |
-          if [ ! -f reference/ICL_MRI/mesh_femur_r.mat ]; then echo "no reference data, skipped"; exit 0; fi
-          ./dist/pystaple/pystaple.exe hip-model reference/ICL_MRI out_exe --body-mass 64
+          if [ ! -f reference/LHDL_CT/mesh_femur_r.mat ]; then echo "no reference data, skipped"; exit 0; fi
+          ./dist/pystaple/pystaple.exe hip-model reference/LHDL_CT out_exe --body-mass 64
           python - <<'PY'
           from pystaple.osim.compare import compare_models
-          diffs = compare_models("out_exe/bone_model.osim", "reference/ICL_MRI/osim/bone_model.osim")
+          diffs = compare_models("out_exe/bone_model.osim", "reference/LHDL_CT/osim/bone_model.osim")
           bad = [d for d in diffs if d.max_abs is None and not d.equal]
           pos = max(d.max_abs for d in diffs if d.max_abs is not None and "[m]" in d.quantity)
           print(f"structural differences: {len(bad)}, largest position difference: {pos * 1000:.2g} mm")
