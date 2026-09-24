@@ -1,22 +1,34 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pystaple"
-version = "0.1.0.dev0"
-description = "Python port of the STAPLE toolbox (Modenese & Renault)"
+dynamic = ["version"]
+description = "Python port of the STAPLE toolbox (Modenese & Renault): automatic OpenSim models from bone geometries"
 readme = "README.md"
-license = { text = "CC BY-NC 4.0" }
-requires-python = ">=3.10"
+license = "CC-BY-NC-4.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.11"
 dependencies = ["numpy>=1.24", "scipy>=1.10"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
 
 [project.optional-dependencies]
 # decimation of the visualization meshes (MATLAB reducepatch)
 viz = ["fast-simplification>=0.1.7"]
 test = ["pytest>=7", "fast-simplification>=0.1.7"]
-# NOTE: the OpenSim model layer also needs the `opensim` package, which is
+# NOTE: building OpenSim models also needs the `opensim` package, which is
 # only distributed via conda: conda install -c opensim-org opensim
+
+[project.scripts]
+pystaple = "pystaple.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "pystaple.__version__" }
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -2,10 +2,13 @@ name: tests
 
 on:
   push:
+    branches: ["**"]  # tags are tested by the release workflow
   pull_request:
+  workflow_call:
 
 jobs:
   test:
+    name: pip / ${{ matrix.os }} / Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -18,4 +21,25 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e ".[test]"
-      - run: pytest -v
+      - run: pytest -v -rs
+
+  test-opensim:
+    name: conda + OpenSim / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    defaults:
+      run:
+        shell: bash -el {0}  # activates the conda environment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          environment-file: environment.yml
+          activate-environment: pystaple
+      - run: python -c "import opensim; print('OpenSim', opensim.__version__)"
+      # the rest of the suite already runs in the pip job
+      - run: pytest -v -rs tests/test_osim_model.py tests/test_osim_structs.py tests/test_osim_geometry.py tests/test_cli.py
