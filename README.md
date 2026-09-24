@@ -24,8 +24,7 @@ OpenSim is only distributed via conda, so use a conda environment:
     conda create -n pystaple -c opensim-org -c conda-forge python=3.11 opensim=4.6
     conda activate pystaple
     pip install "pystaple[viz] @ https://github.com/PatrikMrnka/pystaple/releases/download/v0.1.0/pystaple-0.1.0-py3-none-any.whl"
- 
- The bone analysesalone (without building the model) only need numpy and scipy.
+
 
 ## Usage
 
@@ -66,6 +65,11 @@ Tests compare every step with MATLAB STAPLE on the 7 datasets of `bone_datasets`
 (`reference/<dataset>/`: bone analyses from `export_reference_outputs.m`, OpenSim
 models and geometries from `hip_model.m` in `osim/`). `tools/compare_osim.py`
 rebuilds all models and prints a full comparison.
+
+Figures: `pip install matplotlib` and `python tools/plot_comparison.py --out docs/validation`
+writes PNG figures and `docs/validation/report.md` (model differences on a log scale
+next to the test tolerances and image resolution, fidelity of the visualization
+meshes, deviation maps on the bone surfaces).
 
 * Bone analysis (landmarks, joint frames, inertia): within 0.001 mm
   (distal femur 0.01 mm / 1e-4 rad).

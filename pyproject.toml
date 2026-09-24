@@ -21,6 +21,8 @@ classifiers = [
 # decimation of the visualization meshes (MATLAB reducepatch)
 viz = ["fast-simplification>=0.1.7"]
 test = ["pytest>=7", "fast-simplification>=0.1.7"]
+# figures of tools/plot_comparison.py
+plots = ["matplotlib>=3.7"]
 # NOTE: building OpenSim models also needs the `opensim` package, which is
 # only distributed via conda: conda install -c opensim-org opensim
 
