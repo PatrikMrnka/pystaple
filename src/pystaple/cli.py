@@ -51,6 +51,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="fraction of triangles kept in the visualization geometries (default: 0.3, 1 = all)",
     )
     hm.add_argument("--joint-defs", choices=("auto2020",), default="auto2020", help="joint definitions")
+    hm.add_argument(
+        "--backend", choices=("xml", "opensim"), default="xml",
+        help="write the .osim directly (default, no OpenSim needed) or through the OpenSim API",
+    )
     hm.add_argument("-q", "--quiet", action="store_true", help="only errors on the console (the log file is complete)")
     return parser
 
@@ -96,9 +100,10 @@ def run_hip_model(args: argparse.Namespace) -> int:
     try:
         log.info("pystaple %s | hip model | bones: %s", __version__, args.bones_folder)
         geom_set = create_tri_geom_set(args.bones, args.bones_folder)
-        from .osim.model import import_opensim
+        if args.backend == "opensim":
+            from .osim.model import import_opensim
 
-        import_opensim()  # fail early, before the bone analysis
+            import_opensim()  # fail early, before the bone analysis
         path, *_ = build_hip_model(
             geom_set,
             args.output_folder,
@@ -107,6 +112,7 @@ def run_hip_model(args: argparse.Namespace) -> int:
             vis_geom_format=args.vis_format,
             model_file_name=args.model_file,
             coeff_face_reduc=args.reduce,
+            backend=args.backend,
         )
     except (FileNotFoundError, ImportError, ValueError, RuntimeError, NotImplementedError) as exc:
         log.error("error: %s", exc)
@@ -123,8 +129,26 @@ def run_hip_model(args: argparse.Namespace) -> int:
     return 0
 
 
+def _pause_if_double_clicked(parser: argparse.ArgumentParser) -> bool:
+    """Started from the Windows explorer (frozen exe, no arguments): show the help
+    and wait, instead of a console window that closes immediately."""
+    if not getattr(sys, "frozen", False) or len(sys.argv) > 1:
+        return False
+    parser.print_help()
+    print("\nExample:\n  pystaple.exe hip-model C:\\data\\bones C:\\data\\model --body-mass 64")
+    print("\nThis is a command line program: run it from a command prompt or PowerShell.")
+    try:
+        input("\nPress Enter to close...")
+    except EOFError:
+        pass
+    return True
+
+
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    if argv is None and _pause_if_double_clicked(parser):
+        return 0
+    args = parser.parse_args(argv)
     if args.command == "hip-model":
         return run_hip_model(args)
     return 2  # pragma: no cover (argparse requires a command)

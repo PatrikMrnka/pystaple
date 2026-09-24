@@ -12,7 +12,11 @@ First release: the `hip_model.m` workflow of STAPLE without MATLAB.
   condyles), Kai2014 tibia, with the GIBOC-core mesh utilities they need.
 - OpenSim model generation (auto2020 joint definitions, gait2392 mass properties
   scaled to the body mass, bone landmarks as markers, visualization geometries).
+  The `.osim` files are written directly, OpenSim is not required; the OpenSim
+  API is available as an optional backend (`--backend opensim`).
 - `pystaple hip-model` command line interface (also `python -m pystaple`).
+- Standalone Windows executable (`pystaple-<version>-windows-x64.zip`), no Python
+  or OpenSim needed.
 - Verification against MATLAB STAPLE on the 7 datasets of `bone_datasets`
   (`reference/`, `tools/compare_osim.py`): identical models within 1e-7 mm.
 - License (CC BY-NC 4.0, as STAPLE), NOTICE with the changes made to STAPLE,

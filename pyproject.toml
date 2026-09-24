@@ -23,8 +23,9 @@ viz = ["fast-simplification>=0.1.7"]
 test = ["pytest>=7", "fast-simplification>=0.1.7"]
 # figures of tools/plot_comparison.py
 plots = ["matplotlib>=3.7"]
-# NOTE: building OpenSim models also needs the `opensim` package, which is
-# only distributed via conda: conda install -c opensim-org opensim
+# The OpenSim package is NOT needed: .osim files are written directly.
+# It is only used by the optional "opensim" backend and by some tests
+# (conda install -c opensim-org opensim).
 
 [project.scripts]
 pystaple = "pystaple.cli:main"
@@ -38,3 +39,4 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["tests"]
+markers = ["opensim: needs the opensim package (skipped without it)"]

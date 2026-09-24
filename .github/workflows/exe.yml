@@ -1,0 +1,39 @@
+name: exe
+
+# Standalone Windows executable (PyInstaller): no Python, conda or OpenSim needed.
+on:
+  workflow_dispatch:   # "Run workflow" button in the Actions tab
+  workflow_call:       # used by the release workflow
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ".[viz]" pyinstaller
+      - name: Build
+        run: python packaging/build_exe.py
+      - name: The executable builds the ICL_MRI model like MATLAB
+        run: |
+          if [ ! -f reference/ICL_MRI/mesh_femur_r.mat ]; then echo "no reference data, skipped"; exit 0; fi
+          ./dist/pystaple/pystaple.exe hip-model reference/ICL_MRI out_exe --body-mass 64
+          python - <<'PY'
+          from pystaple.osim.compare import compare_models
+          diffs = compare_models("out_exe/bone_model.osim", "reference/ICL_MRI/osim/bone_model.osim")
+          bad = [d for d in diffs if d.max_abs is None and not d.equal]
+          pos = max(d.max_abs for d in diffs if d.max_abs is not None and "[m]" in d.quantity)
+          print(f"structural differences: {len(bad)}, largest position difference: {pos * 1000:.2g} mm")
+          assert not bad, bad
+          assert pos < 1e-5, pos
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pystaple-windows
+          path: dist/pystaple-*-windows-x64.zip
+          if-no-files-found: error

@@ -1,3 +1,5 @@
+# Development environment with OpenSim (optional: pystaple itself does not need it;
+# it is used by the tests marked 'opensim' and by --backend opensim).
 name: pystaple
 channels:
   - opensim-org

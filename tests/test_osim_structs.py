@@ -150,3 +150,53 @@ def test_mesh_distances_with_degenerate_faces():
     d = point_to_surface_distance(np.array([[0.5, 0.5, 1.0], [1.0, -1.0, 0.0]]), m, k=3)
     np.testing.assert_allclose(d, [1.0, 1.0])
     assert np.isfinite(compare_meshes(m, m, n=500)["hausdorff"])
+
+
+# --- OpenSim-free .osim writer ----------------------------------------------------------
+
+
+def test_number_format_like_opensim():
+    from pystaple.osim.writer import fmt
+
+    assert [fmt(x) for x in (0.2, -9.8081, 0.001, 10.0, 0.0, 1.5707963267948966)] == [
+        "0.20000000000000001", "-9.8080999999999996", "0.001", "10", "0", "1.5707963267948966"
+    ]
+
+
+def test_construct_independent_axes_like_opensim():
+    from pystaple.osim.writer import construct_independent_axes
+
+    knee = construct_independent_axes(np.vstack([np.eye(3)[[2, 0, 1]], np.eye(3)]), 1)
+    np.testing.assert_array_equal(knee[:3], [[0, 0, 1], [1, 0, 0], [0, -1, 0]])  # as in bone_model.osim
+    swapped = construct_independent_axes(np.vstack([[[1, 0, 0], [1, 0, 0], [0, 1, 0]], np.eye(3)]), 1)
+    np.testing.assert_array_equal(swapped[1:3], [[0, 1, 0], [0, 0, -1]])
+    two = construct_independent_axes(np.vstack([[[1, 0, 0], [0, 1, 0], [5, 5, 5]], np.eye(3)]), 2)
+    np.testing.assert_array_equal(two[2], [0, 0, 1])
+
+
+def test_opensim_orientation_roundtrip():
+    from pystaple.osim.writer import opensim_orientation
+
+    np.testing.assert_array_equal(opensim_orientation([0, 0, 0]), [0, 0, 0])
+    rng = np.random.default_rng(0)
+    for a in rng.uniform([-3, -1.5, -3], [3, 1.5, 3], size=(200, 3)):
+        np.testing.assert_allclose(opensim_orientation(a), a, atol=1e-14)
+    # gimbal lock: theta2 = +-pi/2, the angles are re-split but describe the same rotation
+    assert opensim_orientation([0.3, np.pi / 2, 0.2])[2] == 0
+
+
+@parametrize_osim_datasets()
+def test_writer_reproduces_matlab_file_exactly(dataset):
+    """Parse the MATLAB/OpenSim .osim and write it again: identical text."""
+    from osim_reference import ref_osim
+    from pystaple.osim.writer import description_from_osim, osim_text
+
+    path = ref_osim(dataset)
+    original = path.read_text(encoding="utf-8").replace("\r\n", "\n")
+    rewritten = osim_text(description_from_osim(reference_model(dataset)))
+    if rewritten != original:
+        import difflib
+
+        diff = "\n".join(list(difflib.unified_diff(original.splitlines(), rewritten.splitlines(),
+                                                   "matlab", "pystaple", lineterm="", n=1))[:40])
+        pytest.fail(f"rewritten file differs:\n{diff}")

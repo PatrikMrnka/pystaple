@@ -19,12 +19,18 @@ limited to the workflow used by `hip_model.m`. Work in progress.
 
 ## Installation
 
-OpenSim is only distributed via conda, so use a conda environment:
+**Windows, no installation:** download `pystaple-<version>-windows-x64.zip` from the
+[Releases](../../releases) page, unzip it and run `pystaple.exe` from a command
+prompt (see `README.txt` inside). Neither Python, MATLAB nor OpenSim is needed.
 
-    conda create -n pystaple -c opensim-org -c conda-forge python=3.11 opensim=4.6
-    conda activate pystaple
+**Python package:**
+
     pip install "pystaple[viz] @ https://github.com/PatrikMrnka/pystaple/releases/download/v0.1.0/pystaple-0.1.0-py3-none-any.whl"
 
+ **OpenSim is not needed**: the `.osim` files are written directly, in
+exactly the format OpenSim prints (verified in the tests against the OpenSim API
+and the MATLAB models). The OpenSim API can still be used as a backend
+(`--backend opensim`, requires `conda install -c opensim-org opensim`).
 
 ## Usage
 
@@ -48,13 +54,13 @@ build_hip_model(geom_set, "output", body_mass=64)
 
 ## Development
 
-    conda env create -f environment.yml
-    conda activate pystaple
+    pip install -e ".[test]"
     pytest -v
 
-`opensim` is only available from conda (`opensim-org` channel). Without it, the
-tests that build the OpenSim model are skipped; everything else (including the
-joint frames, mass properties and markers that go into the model) is still tested.
+The whole test suite runs without OpenSim. With OpenSim installed
+(`conda env create -f environment.yml`), the tests marked `opensim` also check
+that the XML writer prints exactly the same text as the OpenSim API and that the
+models load and initialise in OpenSim.
 
 The reference folder can be moved with the `PYSTAPLE_REFERENCE_DIR`
 environment variable.
@@ -105,6 +111,10 @@ Diagnostics: `tools/compare_osim.py` (OpenSim models),
 `tools/diag_femur_matlab.m` + `tools/diag_femur.py <dataset>` (femur pipeline).
 
 ## Releasing
+
+The standalone executable is built by `python packaging/build_exe.py`
+(`pip install ".[viz]" pyinstaller`), in CI by the `exe` workflow (also runnable
+by hand from the Actions tab).
 
 1. Update `__version__` in `src/pystaple/__init__.py` and add a section
    `## [x.y.z] - date` to `CHANGELOG.md`.

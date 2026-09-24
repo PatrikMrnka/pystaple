@@ -26,7 +26,7 @@ def test_side_cannot_be_inferred(tmp_path, capsys):
 
 
 def test_hip_model_end_to_end(tmp_path):
-    pytest.importorskip("opensim")
+    """Default backend: no OpenSim needed."""
     bones = REFERENCE_DIR / "ICL_MRI"
     if not (bones / "mesh_femur_r.mat").is_file():
         pytest.skip(f"no reference meshes in {bones}")

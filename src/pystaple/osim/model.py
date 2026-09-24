@@ -6,7 +6,8 @@ createCustomJointFromStruct.m, createSpatialTransformFromStruct.m,
 assignMassPropsToSegments.m and addBoneLandmarksAsMarkers.m.
 
 All numbers are computed in the pure-Python modules (joints, anthropometry);
-this module only transfers them to OpenSim objects.
+this module only transfers them to OpenSim objects. It is an optional backend:
+by default models are written without OpenSim (osim.writer).
 """
 
 from __future__ import annotations
@@ -22,12 +23,7 @@ from .joints import ROT, TRANS, finalize_joint_struct, infer_body_side
 
 log = logging.getLogger(__name__)
 
-CREDITS = (
-    "Luca Modenese, Jean-Baptiste Renault 2020. Model created using the STAPLE "
-    "(Shared Tools for Automatic Personalised Lower Extremity) modelling toolbox. "
-    "GitHub page: https://github.com/modenaxe/msk-STAPLE."
-)
-GRAVITY = (0.0, -9.8081, 0.0)
+from .writer import CREDITS, GRAVITY  # noqa: E402  (same header as the XML writer)
 
 
 def import_opensim():
