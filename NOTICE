@@ -1,0 +1,55 @@
+pystaple
+========
+
+pystaple is a Python translation of parts of the STAPLE MATLAB toolbox
+(Shared Tools for Automatic Personalised Lower Extremity modelling):
+
+    STAPLE, Copyright (c) 2020-2021 Modenese L., Renault J.-B.
+    https://github.com/modenaxe/msk-STAPLE
+    Licensed under the Creative Commons Attribution-NonCommercial 4.0
+    International License (CC BY-NC 4.0).
+
+STAPLE includes GIBOC-core, a minimal version of the GIBOC-knee toolbox by
+Renault J.-B. et al. (https://github.com/renaultJB/GIBOC-Knee-Coordinate-System),
+and the function lscylinder.m from the NPL Least Squares Geometric Elements
+library; the corresponding parts of pystaple are translations of that code.
+
+pystaple, Copyright (c) 2026 <Your Name>, is distributed under the same license,
+CC BY-NC 4.0 (see LICENSE). It is free for academic and other non-commercial use.
+Uses beyond those permitted by the license must be discussed with the authors
+of STAPLE.
+
+Changes made to the original work
+---------------------------------
+* The MATLAB code used by STAPLE's hip_model workflow (STAPLE pelvis, GIBOC femur
+  with cylinder fit, Kai2014 tibia, auto2020 joints, OpenSim model generation)
+  was translated to Python (numpy, scipy and the OpenSim Python API).
+* MATLAB toolbox functions were replaced by equivalents: Curve Fitting Toolbox
+  fits (fitCSA) by scipy.optimize, convhull by scipy.spatial, reducepatch by the
+  fast-simplification package.
+* computeMassProperties_Mirtich1996 was replaced by TriInertiaPpties (the MATLAB
+  function has an error in the products of inertia, which does not affect the
+  final models).
+* Paths of the visualization meshes in the .osim files use "/" as separator.
+* Command line interface, tests against MATLAB outputs and comparison tools were
+  added.
+No other change of the algorithms is intended; results are verified against
+MATLAB STAPLE (see README.md).
+
+How to cite
+-----------
+If you use pystaple, please cite the STAPLE publication, as requested by its
+authors:
+
+    Modenese L., Renault J.-B. (2021). Automatic generation of personalised
+    skeletal models of the lower limb from three-dimensional bone geometries.
+    Journal of Biomechanics 116, 110186.
+    https://doi.org/10.1016/j.jbiomech.2020.110186
+
+and the publications of the algorithms you use (see README.md).
+
+Data
+----
+The bone geometries and MATLAB outputs in reference/ are derived from the
+bone_datasets distributed with STAPLE and are subject to their own terms, see
+reference/DATA_LICENSES.md. They are not part of the Python package.

@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: >-
+  pystaple is a Python translation of the STAPLE toolbox. If you use it, please
+  cite the STAPLE publication (preferred citation below) and the publications of
+  the algorithms you use (see README.md).
+title: "pystaple: Python port of the STAPLE toolbox"
+type: software
+authors:
+  - name: "Patrik Mrnka"
+version: 0.1.0
+date-released: "2026-09-24"
+license: CC-BY-NC-4.0
+repository-code: "https://github.com/PatrikMrnka/pystaple"
+references:
+  - type: software
+    title: "STAPLE: Shared Tools for Automatic Personalised Lower Extremity modelling"
+    authors:
+      - family-names: Modenese
+        given-names: Luca
+      - family-names: Renault
+        given-names: Jean-Baptiste
+    doi: 10.5281/zenodo.4428103
+    repository-code: "https://github.com/modenaxe/msk-STAPLE"
+    license: CC-BY-NC-4.0
+preferred-citation:
+  type: article
+  title: "Automatic generation of personalised skeletal models of the lower limb from three-dimensional bone geometries"
+  authors:
+    - family-names: Modenese
+      given-names: Luca
+    - family-names: Renault
+      given-names: Jean-Baptiste
+  journal: "Journal of Biomechanics"
+  volume: 116
+  start: 110186
+  year: 2021
+  doi: 10.1016/j.jbiomech.2020.110186
