@@ -1,13 +1,14 @@
 name: pystaple
 channels:
+  - opensim-org
   - conda-forge
 dependencies:
-  - python=3.12
+  - python=3.11
+  - opensim=4.6
   - numpy
   - scipy
   - pytest
   - pip
-  # phase 6 (OpenSim layer):
-  # - opensim-org::opensim
   - pip:
+      - fast-simplification
       - -e .
