@@ -3,7 +3,9 @@
 The meshes (`mesh_*.mat`), MATLAB outputs (`reference.json`, `diag_femur.json`) and
 MATLAB OpenSim models (`osim/`) in this folder were generated from the
 `bone_datasets` distributed with [STAPLE](https://github.com/modenaxe/msk-STAPLE)
-(`export_reference_outputs.m`, `hip_model.m`). They are used only to test pystaple
+(`export_reference_outputs.m`, `hip_model.m`) and, for `MSKPIPE_CT`, from bones
+segmented by [msk-PIPE](https://github.com/PatrikMrnka/msk-PIPE)
+(`tools/export_reference_dataset.m`). They are used only to test pystaple
 and are not included in the Python package.
 
 Each dataset keeps the terms under which it is distributed. Please cite the
@@ -17,8 +19,9 @@ reference publication when using the data.
 | MC22 | Montefiori et al. (2020) dataset, [doi:10.15131/shef.data.9934055.v1](https://doi.org/10.15131/shef.data.9934055.v1), via STAPLE | Montefiori et al. (2020), PLoS ONE 15:e0242973, [doi:10.1371/journal.pone.0242973](https://doi.org/10.1371/journal.pone.0242973) | terms of the original dataset; cite the publication |
 | TLEM2_CT, TLEM2_MRI | TLEM 2.0 dataset, via STAPLE | Carbone et al. (2015), J Biomech 48:734-741, [doi:10.1016/j.jbiomech.2014.12.034](https://doi.org/10.1016/j.jbiomech.2014.12.034) | terms of the TLEM 2.0 dataset; cite the publication |
 | VAKHUM_CT | VAKHUM project (Physiome Space), via STAPLE | Van Sint Jan (2006), [doi:10.1080/14639220412331529591](https://doi.org/10.1080/14639220412331529591) | **CC BY-NC-SA 2.0 BE**, see `VAKHUM_CT/VAKHUM_resources_license_agreement.pdf` |
+| MSKPIPE_CT | CT scan of the Living Human Digital Library, segmented by msk-PIPE (TotalSegmentator, VTK meshing) | Viceconti et al. (2008), J Physiol Sci, [doi:10.2170/physiolsci.RP009908](https://doi.org/10.2170/physiolsci.RP009908) | **CC BY-NC-SA 2.0 BE**, see `MSKPIPE_CT/LICENSE_LHDL.pdf` |
 
-The files in `LHDL_CT/` and `VAKHUM_CT/` are derivative works of data licensed
+The files in `LHDL_CT/`, `MSKPIPE_CT/` and `VAKHUM_CT/` are derivative works of data licensed
 under CC BY-NC-SA 2.0 BE and are therefore distributed under that same license
 (non-commercial use, attribution to the original authors, share alike):
 http://creativecommons.org/licenses/by-nc-sa/2.0/be/

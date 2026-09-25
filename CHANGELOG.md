@@ -3,6 +3,19 @@
 All notable changes to this project are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- Reference dataset `MSKPIPE_CT`: pelvis, right femur and tibia segmented
+  automatically from an LHDL CT scan (CC BY-NC-SA 2.0 BE) by [msk-PIPE](https://github.com/PatrikMrnka/msk-PIPE)
+  (TotalSegmentator, VTK meshing). pystaple and MATLAB STAPLE give the same model
+  (no structural difference, positions within 2e-11 mm, angles within 5e-13 rad,
+  bit-identical masses and inertias); the Python visualization meshes are closer
+  to the original bones than MATLAB's for all three bones.
+- `tools/export_reference_dataset.m`: writes a new reference dataset
+  (`mesh_<bone>.mat`, `reference.json`, `osim/`) from a folder of bone meshes with
+  MATLAB STAPLE.
+
 ## [0.1.0] - 2026-09-24
 
 First release: the `hip_model.m` workflow of STAPLE without MATLAB.

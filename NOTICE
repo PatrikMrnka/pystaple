@@ -14,7 +14,7 @@ Renault J.-B. et al. (https://github.com/renaultJB/GIBOC-Knee-Coordinate-System)
 and the function lscylinder.m from the NPL Least Squares Geometric Elements
 library; the corresponding parts of pystaple are translations of that code.
 
-pystaple, Copyright (c) 2026 <Your Name>, is distributed under the same license,
+pystaple, Copyright (c) 2026 Patrik Mrnka, is distributed under the same license,
 CC BY-NC 4.0 (see LICENSE). It is free for academic and other non-commercial use.
 Uses beyond those permitted by the license must be discussed with the authors
 of STAPLE.
@@ -51,5 +51,7 @@ and the publications of the algorithms you use (see README.md).
 Data
 ----
 The bone geometries and MATLAB outputs in reference/ are derived from the
-bone_datasets distributed with STAPLE and are subject to their own terms, see
-reference/DATA_LICENSES.md. They are not part of the Python package.
+bone_datasets distributed with STAPLE and, for MSKPIPE_CT, from a CT scan of
+the Living Human Digital Library segmented by msk-PIPE (https://github.com/PatrikMrnka/msk-PIPE). They are
+subject to the terms of the original data, see reference/DATA_LICENSES.md.
+They are not part of the Python package.

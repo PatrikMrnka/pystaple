@@ -2,7 +2,7 @@ out/
 compare_report.txt
 build/
 dist/
-
+*.patch
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

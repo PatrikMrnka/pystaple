@@ -5,7 +5,8 @@ meshes differ triangle by triangle. What matters is that the Python meshes have
 the same size and are at least as faithful to the original bone as MATLAB's.
 Maximum deviations of 1-5 mm occur with both algorithms at thin bone edges, so
 point-wise limits against the MATLAB mesh would be meaningless.
-Limits calibrated on the 7 bone_datasets (tools/compare_osim.py, 2026-09).
+Limits calibrated on the 7 bone_datasets (tools/compare_osim.py, 2026-09);
+MSKPIPE_CT (msk-PIPE segmentation) is well within them.
 """
 
 import warnings

@@ -67,10 +67,18 @@ environment variable.
 
 ## Verification against MATLAB
 
-Tests compare every step with MATLAB STAPLE on the 7 datasets of `bone_datasets`
-(`reference/<dataset>/`: bone analyses from `export_reference_outputs.m`, OpenSim
-models and geometries from `hip_model.m` in `osim/`). `tools/compare_osim.py`
-rebuilds all models and prints a full comparison.
+Tests compare every step with MATLAB STAPLE on 8 datasets (`reference/<dataset>/`:
+bone analyses in `reference.json`, OpenSim models and geometries from `hip_model.m`
+in `osim/`):
+
+* the 7 datasets of STAPLE's `bone_datasets` (manually segmented CT and MRI,
+  exported with `export_reference_outputs.m`);
+* `MSKPIPE_CT`: bones segmented automatically from an LHDL CT scan (TotalSegmentator, VTK
+  meshing and smoothing) by [msk-PIPE](https://github.com/PatrikMrnka/msk-PIPE),
+  exported with `tools/export_reference_dataset.m`. This is the kind of input
+  pystaple gets inside msk-PIPE.
+
+`tools/compare_osim.py` rebuilds all models and prints a full comparison.
 
 Figures: `pip install matplotlib` and `python tools/plot_comparison.py --out docs/validation`
 writes PNG figures and `docs/validation/report.md` (model differences on a log scale
@@ -81,11 +89,26 @@ meshes, deviation maps on the bone surfaces).
   (distal femur 0.01 mm / 1e-4 rad).
 * OpenSim model (`bone_model.osim`): no structural difference (bodies, joints,
   coordinates, ranges, axes, frames, markers); numbers differ by at most
-  1e-7 mm and 1e-9 rad, masses and inertias are bit-identical.
+  1e-7 mm and 1e-9 rad, masses and inertias are bit-identical (MSKPIPE_CT:
+  2e-11 mm and 5e-13 rad).
 * Visualization geometries: same number of triangles as MATLAB, same volume
   (within 0.2 %), mean surface distance to the MATLAB mesh 0.01-0.12 mm. Compared
   with the original bone, the Python meshes are as faithful as MATLAB's or more
   (mean deviation 0.000-0.105 mm vs 0.009-0.108 mm).
+
+### Adding a dataset
+
+Any folder `reference/<dataset>/` with `mesh_<bone>.mat`, `reference.json` and
+`osim/` is picked up by the tests, `tools/compare_osim.py` and
+`tools/plot_comparison.py`. `tools/export_reference_dataset.m` writes all three
+from a folder of bone meshes (e.g. the `bones_STAPLE` folder of an
+[msk-PIPE](https://github.com/PatrikMrnka/msk-PIPE) run):
+
+    export_reference_dataset('path\to\msk-STAPLE', 'path\to\run_1\bones_STAPLE', ...
+        'path\to\pystaple\reference', 'MSKPIPE_CT')
+
+The meshes are saved as MATLAB reads them, so pystaple starts from the same
+triangulation. Add the source and terms of the data to `reference/DATA_LICENSES.md`.
 
 ## Known differences from MATLAB
 
@@ -95,7 +118,8 @@ meshes, deviation maps on the bone surfaces).
 * On meshes segmented from voxel grids, many convex-hull edges have exactly
   equal lengths and flat hull facets can be triangulated in several ways; a
   couple of condyle point pairs may then differ from MATLAB. STAPLE itself is
-  not unique in that case.
+  not unique in that case. It does not occur on MSKPIPE_CT, whose voxel meshes
+  are smoothed before STAPLE.
 * Visualization meshes (`Geometry/*.obj`) are decimated with `fast-simplification`
   instead of MATLAB `reducepatch`, so they differ triangle by triangle (the model
   is not affected). Both algorithms simplify thin bone edges, with maximum
@@ -132,8 +156,9 @@ under the same license, the
 uses beyond those permitted by the license must be discussed with the authors of
 STAPLE. [NOTICE](NOTICE) lists the changes made to the original work.
 
-The test data in `reference/` are derived from the STAPLE `bone_datasets` and keep
-their own terms (two of them are CC BY-NC-SA 2.0 BE), see
+The test data in `reference/` are derived from the STAPLE `bone_datasets` and from
+an LHDL CT scan processed by msk-PIPE (`MSKPIPE_CT`), and keep their own terms
+(three of them are CC BY-NC-SA 2.0 BE), see
 [reference/DATA_LICENSES.md](reference/DATA_LICENSES.md).
 
 ## Citation
