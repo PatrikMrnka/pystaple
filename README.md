@@ -23,6 +23,12 @@ limited to the workflow used by `hip_model.m`. Work in progress.
 [Releases](../../releases) page, unzip it and run `pystaple.exe` from a command
 prompt (see `README.txt` inside). Neither Python, MATLAB nor OpenSim is needed.
 
+**Test data:** `pystaple-<version>-reference-data.zip` on the same page contains
+the 8 reference datasets (bone meshes, MATLAB STAPLE outputs and models, with the
+terms of each dataset). Each dataset folder can be used directly as input, e.g.
+`pystaple hip-model reference/LHDL_CT out_lhdl`, and the result compared with
+`reference/LHDL_CT/osim/bone_model.osim`.
+
 **Python package:**
 
     pip install "pystaple[viz] @ https://github.com/PatrikMrnka/pystaple/releases/download/v0.1.0/pystaple-0.1.0-py3-none-any.whl"
@@ -143,8 +149,9 @@ by hand from the Actions tab).
 1. Update `__version__` in `src/pystaple/__init__.py` and add a section
    `## [x.y.z] - date` to `CHANGELOG.md`.
 2. Commit, then `git tag vx.y.z` and `git push origin vx.y.z`.
-3. The release workflow runs all tests, builds the wheel and creates the GitHub
-   release with the notes from the changelog.
+3. The release workflow runs all tests, builds the wheel, the Windows executable
+   and the reference data zip, and creates the GitHub release with the notes from
+   the changelog.
 
 ## License
 

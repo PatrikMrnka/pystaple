@@ -8,7 +8,7 @@ type: software
 authors:
   - name: "Patrik Mrnka"
 version: 0.1.0
-date-released: "2026-09-24"
+date-released: "2026-09-25"
 license: CC-BY-NC-4.0
 repository-code: "https://github.com/PatrikMrnka/pystaple"
 references:

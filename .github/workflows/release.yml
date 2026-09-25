@@ -34,6 +34,8 @@ jobs:
         run: |
           pip install build
           python -m build
+      - name: Reference data (meshes, MATLAB outputs and models, with their licenses)
+        run: zip -r -q "dist/pystaple-${GITHUB_REF_NAME#v}-reference-data.zip" reference
       - uses: actions/download-artifact@v4
         with:
           name: pystaple-windows
